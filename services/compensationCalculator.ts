@@ -133,7 +133,7 @@ export const runSimulation = (input: SimulationInput): SimulationResultRow[] => 
     const basicDeduction = calculateBasicDeduction(totalIncomeBeforeDeductions);
     const dependentsDeduction = input.dependents * DEPENDENT_DEDUCTION;
     
-    const taxableIncome = Math.max(0, totalIncomeBeforeDeductions - individualSocialInsurance - basicDeduction - dependentsDeduction);
+    const taxableIncome = Math.max(0, totalIncomeBeforeDeductions - individualSocialInsurance - basicDeduction - dependentsDeduction - input.otherDeductions);
     
     const { tax: incomeTax, rate: incomeTaxRate, deduction: incomeTaxDeduction } = calculateIncomeTax(taxableIncome);
     const residenceTax = Math.floor(Math.max(0, taxableIncome) * RESIDENCE_TAX_RATE);
@@ -153,6 +153,7 @@ export const runSimulation = (input: SimulationInput): SimulationResultRow[] => 
       monthlyCompensation,
       annualBonus,
       annualCompensation,
+      otherDeductions: input.otherDeductions,
       individualTakeHomePay,
       individualSocialInsurance,
       incomeTax,

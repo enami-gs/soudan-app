@@ -1,5 +1,6 @@
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+// FIX: Import RowInput type from jspdf-autotable to correctly type table body data.
+import autoTable, { RowInput } from 'jspdf-autotable';
 import html2canvas from 'html2canvas';
 import { SimulationInput, SimulationResultRow } from '../types';
 import { ipaexgBase64 } from './ipaexg-base64';
@@ -79,6 +80,7 @@ export const exportResultsToPdf = async (
       { label: 'シミュレーションの刻み幅', value: formatCurrency(input.incrementAmount) },
       { label: '年齢', value: ageMap[input.age] },
       { label: '扶養親族の数（一般）', value: `${input.dependents} 人` },
+      { label: 'その他控除', value: formatCurrency(input.otherDeductions) },
     ],
     columns: [
       { header: '項目', dataKey: 'label' },
@@ -110,12 +112,14 @@ export const exportResultsToPdf = async (
   if (baseResult) {
     addSectionTitle(`基準額（月額 ${formatCurrency(baseResult.monthlyCompensation)}）の詳細計算`);
     
-    const individualBody = [
+    // FIX: Explicitly type `individualBody` as `RowInput[]` to resolve TypeScript error with `fontStyle`.
+    const individualBody: RowInput[] = [
         ['報酬合計 (年)', formatCurrency(baseResult.annualCompensation)],
         ['(-) 給与所得控除', formatCurrency(baseResult.salaryIncomeDeduction)],
         ['(-) 社会保険料', formatCurrency(baseResult.individualSocialInsurance)],
         ['(-) 基礎控除', formatCurrency(baseResult.basicDeduction)],
         ['(-) 扶養控除', formatCurrency(input.dependents * DEPENDENT_DEDUCTION)],
+        ['(-) その他控除', formatCurrency(baseResult.otherDeductions)],
         ['(=) 課税所得', { content: formatCurrency(baseResult.taxableIncome), styles: { fontStyle: 'bold' }}],
         ['(-) 所得税', formatCurrency(baseResult.incomeTax)],
         ['(-) 住民税', formatCurrency(baseResult.residenceTax)],
@@ -131,7 +135,8 @@ export const exportResultsToPdf = async (
     });
     cursorY = (doc as any).lastAutoTable.finalY + 20;
 
-     const companyBody = [
+    // FIX: Explicitly type `companyBody` as `RowInput[]` to resolve TypeScript error with `fontStyle`.
+     const companyBody: RowInput[] = [
         ['支払い前の利益', formatCurrency(input.companyProfitBeforeCompensation)],
         ['(-) 報酬合計 (年)', formatCurrency(baseResult.annualCompensation)],
         ['(-) 社会保険料', formatCurrency(baseResult.companySocialInsurance)],

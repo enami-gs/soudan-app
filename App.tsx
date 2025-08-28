@@ -74,6 +74,7 @@ export default function App() {
     age: 40,
     dependents: 0,
     incrementAmount: 100000,
+    otherDeductions: 0,
   });
   const [results, setResults] = useState<SimulationResultRow[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -199,6 +200,12 @@ export default function App() {
                   <Input type="text" inputMode="numeric" name="dependents" id="dependents" value={input.dependents} onChange={handleInputChange} />
                 </div>
                 <div>
+                  <Label htmlFor="otherDeductions" tooltip="上記で反映できない控除額（iDeCo、生命保険料控除、医療費控除など）を自由に入力できます。">
+                    その他控除
+                  </Label>
+                  <Input type="text" inputMode="numeric" name="otherDeductions" id="otherDeductions" value={input.otherDeductions.toLocaleString()} onChange={handleInputChange} />
+                </div>
+                <div>
                   <Button type="submit" disabled={isLoading}>
                     {isLoading ? '計算中...' : 'シミュレーション実行'}
                   </Button>
@@ -238,6 +245,7 @@ export default function App() {
                             <BreakdownItem label={<>(-) 社会保険料 <span className="text-gray-400 text-xs font-normal">(料率{socialInsuranceRatePercentage}%の折半, 上限あり)</span></>} value={formatCurrency(baseResult.individualSocialInsurance)} type="sub" />
                             <BreakdownItem label="(-) 基礎控除" value={formatCurrency(baseResult.basicDeduction)} type="sub" />
                             <BreakdownItem label="(-) 扶養控除" value={formatCurrency(input.dependents * DEPENDENT_DEDUCTION)} type="sub" />
+                            <BreakdownItem label="(-) その他控除" value={formatCurrency(baseResult.otherDeductions)} type="sub" />
                             <BreakdownItem label="(=) 課税所得" value={formatCurrency(baseResult.taxableIncome)} type="equals" />
                             <BreakdownItem label={<>(-) 所得税 <span className="text-gray-400 text-xs font-normal">{incomeTaxDetails}</span></>} value={formatCurrency(baseResult.incomeTax)} type="sub" />
                             <BreakdownItem label={<>(-) 住民税 <span className="text-gray-400 text-xs font-normal">(税率{RESIDENCE_TAX_RATE * 100}%)</span></>} value={formatCurrency(baseResult.residenceTax)} type="sub" />

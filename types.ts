@@ -6,6 +6,7 @@ export interface SimulationInput {
   age: number; // 39: under 40, 40: 40-64, 65: 65+
   dependents: number;
   incrementAmount: number;
+  otherDeductions: number;
 }
 
 export interface SimulationResultRow {
@@ -13,6 +14,7 @@ export interface SimulationResultRow {
   monthlyCompensation: number;
   annualBonus: number;
   annualCompensation: number;
+  otherDeductions: number;
   
   // Individual
   individualTakeHomePay: number;
