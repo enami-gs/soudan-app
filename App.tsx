@@ -146,8 +146,8 @@ export default function App() {
 
 
   return (
-    <div className="min-h-screen bg-gray-100 font-sans p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gray-100 font-sans p-4 sm:p-6 lg:p-8 flex flex-col">
+      <div className="max-w-7xl mx-auto w-full flex-grow">
         <header className="text-center mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-800">役員報酬最適化シミュレーター</h1>
           <p className="mt-2 text-md text-gray-600">税金合計額を最小化する報酬額を見つけましょう。</p>
@@ -162,25 +162,25 @@ export default function App() {
                   <Label htmlFor="companyProfitBeforeCompensation" tooltip="役員報酬や社会保険料（会社負担分）を支払う前の、会社の利益（≒営業利益＋営業外収益－営業外費用）を入力してください。">
                     役員報酬支払い前の会社利益
                   </Label>
-                  <Input type="text" inputMode="numeric" name="companyProfitBeforeCompensation" id="companyProfitBeforeCompensation" value={input.companyProfitBeforeCompensation} onChange={handleInputChange} />
+                  <Input type="text" inputMode="numeric" name="companyProfitBeforeCompensation" id="companyProfitBeforeCompensation" value={input.companyProfitBeforeCompensation.toLocaleString()} onChange={handleInputChange} />
                 </div>
                  <div>
                   <Label htmlFor="baseMonthlyCompensation" tooltip="シミュレーションの中心としたい役員報酬の月額を入力してください。この金額を基準に、±5パターンの報酬額を比較します。">
                     基準の役員報酬（月額）
                   </Label>
-                  <Input type="text" inputMode="numeric" name="baseMonthlyCompensation" id="baseMonthlyCompensation" value={input.baseMonthlyCompensation} onChange={handleInputChange} />
+                  <Input type="text" inputMode="numeric" name="baseMonthlyCompensation" id="baseMonthlyCompensation" value={input.baseMonthlyCompensation.toLocaleString()} onChange={handleInputChange} />
                 </div>
                  <div>
                   <Label htmlFor="annualBonus" tooltip="年間の賞与額を入力してください。社会保険料や税金の計算に反映されます。">
                     年間賞与額
                   </Label>
-                  <Input type="text" inputMode="numeric" name="annualBonus" id="annualBonus" value={input.annualBonus} onChange={handleInputChange} />
+                  <Input type="text" inputMode="numeric" name="annualBonus" id="annualBonus" value={input.annualBonus.toLocaleString()} onChange={handleInputChange} />
                 </div>
                  <div>
                   <Label htmlFor="incrementAmount" tooltip="シミュレーションで比較する役員報酬の増減額（刻み幅）を入力します。例えば10万円と入力すると、基準報酬額±10万円、±20万円…といった形で比較します。">
                     シミュレーションの刻み幅
                   </Label>
-                  <Input type="text" inputMode="numeric" name="incrementAmount" id="incrementAmount" value={input.incrementAmount} onChange={handleInputChange} />
+                  <Input type="text" inputMode="numeric" name="incrementAmount" id="incrementAmount" value={input.incrementAmount.toLocaleString()} onChange={handleInputChange} />
                 </div>
                 <div>
                   <Label htmlFor="age" tooltip="経営者の方の年齢を選択してください。40歳以上65歳未満の場合、介護保険料が加算されます。">
@@ -324,6 +324,9 @@ export default function App() {
           </div>
         </div>
       </div>
+      <footer className="text-center py-4 text-gray-500 text-sm mt-8">
+        @GS共同会計事務所
+      </footer>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 {
-  "name": "Executive Compensation Optimizer",
+  "name": "役員報酬シミュレーター",
   "description": "A simulator to find the optimal executive compensation to maximize the combined cash remaining for the individual and the company in Japan.",
   "requestFramePermissions": []
 }
